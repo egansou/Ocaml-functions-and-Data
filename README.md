@@ -1,42 +1,21 @@
-# Project 2B: OCaml Higher Order Functions and Data
-CMSC 330, Fall 2017  
-Due Monday, October 2nd, 2017
+# Project: OCaml Higher Order Functions and Data
 
-Ground Rules and Extra Info
----------------------------
-This is **NOT** a pair project. You must work on this project alone as with most other CS projects. See the Academic Integrity section for more information.
-
-In your code, you may only use library functions found in the [`Pervasives` module][pervasives doc] and the functions provided in `funs.ml`. You may not use any imperative structures of OCaml such as references.
-
-At a few points in this document, it will be requested that you raise an `Invalid_argument` exception. To raise an exception in OCaml, use the function `raise : exn -> 'a`. The argument `exn` is the exception to raise, and `Invalid_argument` is part of the `exn` data type. The return value is `'a` in order to match to surrounding branch types and can therefore be ignored. In order to raise an `Invalid_argument` exception with the message, "something went wrong", the following line of code would suffice:
-```
-raise (Invalid_argument("something went wrong"))
-```
+For this project, Library functions found in the [`Pervasives` module][pervasives doc] and the functions provided in `funs.ml`. 
 
 Introduction
 ------------
-The goal of this project is to increase your familiarity with programming in OCaml using higher order functions and user-defined types. You will have to write a total of 15 small functions, the specifications of which are given below. Some of them start out as code we provide you. In our reference solution, each function typically requires writing or modifying 5-8 lines of code, except for the last function, `reachable`, which is more involved.
-
-**This project is due in one week!** We recommend you get started right away, going from top to bottom. The problems get increasingly more challenging, and in many cases later problems can take advantage of earlier solutions.
+The goal of this project is to increase familiarity with programming in OCaml using higher order functions and user-defined types. 
 
 Project Files
 -------------
-To begin this project, you will need to commit any uncommitted changes to your local branch and pull updates from the git repository. [Click here for directions on working with the Git repository.][git instructions] The following are the relevant files:
 
-<!-- TODO add the real files to the document and ensure that they're correct -->
--  OCaml Files
+## OCaml Files
   - **data.ml**: This is where you will write your code for all parts of the project. All other files will be discarded.
   - **data.mli**: This file is used to describe the signature of all the functions in the module. Don't worry about this file, but make sure it exists or your code will not compile. It also contains our type definitions.
   - **funs.ml** and **funs.mli**: These files contain definitions for map, fold, length, and reverse.
   - **public.ml**: This file contains all of the public test cases.
-- Submission Scripts and Other Files
-  - **submit.rb**: Execute this script to submit your project to the submit server.
-  - **submit.jar** and **.submit**: Don't worry about these files, but make sure you have them.
-  - **Makefile**: This is used to build the public tests by simply running the command `make`, just as in 216.
+  - **Makefile**: This is used to build the public tests by simply running the command `make`.
 
-Compilation and Tests
----------------------
-In order to compile your project, simply run the `make` command and our `Makefile` will handle the compilation process for you, just as in 216. After compiling your code, the public tests can be run by running `public.native` (i.e. `./public.native`; think of this just like with a.out in C)
 
 Part 1: High Order Functions
 ------------------------
@@ -89,7 +68,7 @@ concat_lists [[[1;2;3];[2]];[[7]]] = [[1;2;3];[2];[7]]
 
 Part 2: Integer BST
 --------------------------------
-You will write functions that will operate on a binary search tree whose nodes contain integers. Provided below is the type of `int_tree`.
+Write functions that will operate on a binary search tree whose nodes contain integers. Provided below is the type of `int_tree`.
 
 ```
 type int_tree =
@@ -121,7 +100,7 @@ let rec int_insert x t =
   | IntNode (y, l, r) -> IntNode (y, l, int_insert x r)
 ```
 
-**Note**: The `when` syntax may be unfamiliar to you - it acts as an extra guard in addition to the pattern. For example, `IntNode (y, l, r) when x < y` will only be matched when the tree is an `IntNode` and `x < y`. This serves a similar purpose to having an if statement inside of the general `IntNode` match case, but allows for more readable syntax in many cases.
+**Note**: The `when` syntax acts as an extra guard in addition to the pattern. For example, `IntNode (y, l, r) when x < y` will only be matched when the tree is an `IntNode` and `x < y`. This serves a similar purpose to having an if statement inside of the general `IntNode` match case, but allows for more readable syntax in many cases.
 
 Let's try writing a function which determines whether a tree contains an element. This follows a similar procedure except we'll be returning a boolean if the element is a member of the tree.
 
@@ -134,7 +113,7 @@ let rec int_mem x t =
   | IntNode (y, l, r) -> int_mem x r
 ```
 
-It's your turn now! Write the following functions which operate on `int_tree`.
+Write the following functions which operate on `int_tree`.
 
 #### int_size t
 - **Type**: `int_tree -> int`
@@ -210,7 +189,7 @@ An empty tree is just a leaf and some comparison function.
 let empty_ptree f : 'a ptree = (f, Leaf)
 ```
 
-You can modify the code from your `int_tree` functions to implement some functions on `ptree`. Remember to use the bundled comparison function!
+Modify the code from your `int_tree` functions to implement some functions on `ptree`. Remember to use the bundled comparison function!
 
 #### pinsert x t
 - **Type**: `'a -> 'a ptree -> 'a ptree`
@@ -236,7 +215,7 @@ pmem 2 t1 = false
 
 Part 4: Graphs with Records
 --------------------------------------
-For the last part of this project, you will implement functions which operate on graphs.
+For the last part of the project, I implement functions which operate on graphs.
 
 Here are the types for graphs. They use OCaml's record syntax.
 
@@ -327,33 +306,9 @@ int_as_list
    []
 ```
 
-Project Submission
-------------------
-You should submit a file `data.ml` containing your solution. You may submit other files, but they will be ignored during grading. We will run your solution as individual OUnit tests just as in the provided public test file.
-
-Be sure to follow the project description exactly! Your solution will be graded automatically, so any deviation from the specification will result in lost points.
-
-You can submit your project in two ways:
-- Submit your `data.ml` file directly to the [submit server][submit server] by clicking on the submit link in the column "web submission".
-![Where to find the web submission link][web submit link]  
-Then, use the submit dialog to submit your `data.ml` file directly.
-![Where to upload the file][web upload example]  
-Select your file using the "Browse" button, then press the "Submit project!" button. You **do not** need to put it in a zip file.
-- Submit directly by executing a the submission script on a computer with Java and network access. Included in this project are the submission scripts and related files listed under **Project Files**. These files should be in the directory containing your project. From there you can either execute submit.rb or run the command `java -jar submit.jar` directly (this is all submit.rb does).
-
-No matter how you choose to submit your project, make sure that your submission is received by checking the [submit server][submit server] after submitting.
-
-Academic Integrity
-------------------
-Please **carefully read** the academic honesty section of the course syllabus. **Any evidence** of impermissible cooperation on projects, use of disallowed materials or resources, or unauthorized use of computer accounts, **will be** submitted to the Student Honor Council, which could result in an XF for the course, or suspension or expulsion from the University. Be sure you understand what you are and what you are not permitted to do in regards to academic integrity when it comes to project assignments. These policies apply to all students, and the Student Honor Council does not consider lack of knowledge of the policies to be a defense for violating them. Full information is found in the course syllabus, which you should review before starting.
-
-<!-- Link References -->
 
 
 <!-- These should always be left alone or at least updated -->
 [pervasives doc]: https://caml.inria.fr/pub/docs/manual-ocaml/libref/Pervasives.html
 [git instructions]: ../git_cheatsheet.md
 [wikipedia inorder traversal]: https://en.wikipedia.org/wiki/Tree_traversal#In-order
-[submit server]: submit.cs.umd.edu
-[web submit link]: image-resources/web_submit.jpg
-[web upload example]: image-resources/web_upload.jpg
